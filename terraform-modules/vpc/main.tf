@@ -74,4 +74,15 @@ resource "aws_route_table_association" "database" {
   subnet_id      = aws_subnet.database.id
   route_table_id = aws_route_table.private-rt.id
 }
+data "aws_vpc" "my_vpc" {
+  id = "vpc"  # Replace with your VPC ID
+}
 
+data "aws_subnet_ids" "public_subnets" {
+  vpc_id = data.aws_vpc.vpc.id
+
+  filter {
+    name   = "tag:Visibility"
+    values = ["public"]
+  }
+}
